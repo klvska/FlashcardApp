@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="flashcards.html">Flashcards</a></li>
+        </ul>
+        <button id="add-set">New Set</button>
+    </nav>
+</header>
+<main>
+    <section class="container">
+        <h1 id="title">Sets</h1>
+        <div id="sets-container"></div>
+    </section>
+</main>
+<section class="add-set-container hide" id="add-set-container">
+    <h2>Add Set
+        <button id="close-set-btn">X</button>
+    </h2>
+    <div class="wrapper">
+        <div class="error-con">
+            <span class="hide error">Input fields cannot be empty!</span>
+        </div>
+    </div>
+    <label for="set-title-input">Set title:</label>
+    <input type="text" id="set-title-input" required>
+    <button id="save-set-btn">Save</button>
+</section>
+<section class="add-flashcard-container hide" id="add-flashcard-container">
+    <h2>Add Flashcard
+        <button id="close-flashcard-btn">X</button>
+    </h2>
+    <div class="wrapper">
+        <div class="error-con">
+            <span class="hide error">Input fields cannot be empty!</span>
+        </div>
+    </div>
+    <label for="flashcard-front-input">Front:</label>
+    <input type="text" id="flashcard-front-input" required>
+    <label for="flashcard-back-input">Back:</label>
+    <input type="text" id="flashcard-back-input" required>
+    <button id="save-flashcard-btn">Save</button>
+</section>
+
+<footer>
+    <p>klvska</p>
+</footer>
+<script src="scripts/index.js"></script>
+</body>
+</html>
