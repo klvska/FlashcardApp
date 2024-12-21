@@ -83,11 +83,15 @@ function loadFlashcardSets() {
                 <h3 class="flashcard-link">${set.name}</h3>
                 <p>${set.cards.length} Flashcards</p>
                 <button onclick="openAddFlashcardForm(${index})">Add Flashcard</button>
+                <div class="set-actions">
+                <button onclick="editSet(${index})">Edit Set</button>
+                <button onclick="deleteSet(${index})">Delete Set</button>
+                </div>
             `;
             const flashcardLink = setElement.querySelector('.flashcard-link');
             flashcardLink.addEventListener('click', () => {
                 localStorage.setItem('currentSetIndex', index);
-                window.location.href = 'pages/set.html';
+                window.location.href = './pages/set.html';
             });
             flashcardContainer.appendChild(setElement);
         });
@@ -98,4 +102,21 @@ function openAddFlashcardForm(index) {
     currentSetIndex = index;
     main.classList.add('hide');
     addFlashcardForm.classList.remove('hide');
+}
+
+function editSet(index) {
+    const setTitle = prompt('Enter a new name for the set');
+    if (setTitle) {
+        sets[index].name = setTitle;
+        localStorage.setItem('flashcardSets', JSON.stringify(sets));
+        loadFlashcardSets();
+    }
+}
+
+function deleteSet(index) {
+    if (confirm('Are you sure you want to delete this set?')) {
+        sets.splice(index, 1);
+        localStorage.setItem('flashcardSets', JSON.stringify(sets));
+        loadFlashcardSets();
+    }
 }

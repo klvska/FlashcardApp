@@ -8,35 +8,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevButton = document.getElementById('prev-btn');
     const nextButton = document.getElementById('next-btn');
 
-
     if (currentSetIndex !== null && sets[currentSetIndex]) {
         const set = sets[currentSetIndex];
         setTitleElement.textContent = set.name;
 
         if (set.cards.length > 0) {
-        set.cards.forEach(card => {
-            const cardElement = document.createElement('div');
-            cardElement.classList.add('flashcard');
-            cardElement.innerHTML = `
-                <p><strong>Front:</strong> ${card.front}</p>
-                <p><strong>Back:</strong> ${card.back}</p>
-            `;
-            flashcardsContainer.appendChild(cardElement);
-        });
-
+            set.cards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('flashcard');
+                cardElement.innerHTML = `
+                    <div class="flashcard-info">
+                        <p><strong>Front:</strong> ${card.front}</p>
+                        <p><strong>Back:</strong> ${card.back}</p>
+                    </div>
+                    <div class="flashcard-actions">
+                        <button onclick="editFlashcard(${index})">Edit</button>
+                        <button onclick="deleteFlashcard(${index})">Delete</button>
+                    </div>
+                `;
+                flashcardsContainer.appendChild(cardElement);
+            });
 
             bigFlashcard.innerHTML = `
-            <div id="big-flashcard-inner">
-                <div id="big-flashcard-front">${set.cards[0].front}</div>
-                <div id="big-flashcard-back">${set.cards[0].back}</div>
-            </div>
-        `;
+                <div id="big-flashcard-inner">
+                    <div id="big-flashcard-front">${set.cards[0].front}</div>
+                    <div id="big-flashcard-back">${set.cards[0].back}</div>
+                </div>
+            `;
 
-        bigFlashcardIndex.textContent = `1 / ${set.cards.length}`;
+            bigFlashcardIndex.textContent = `1 / ${set.cards.length}`;
 
-        bigFlashcard.addEventListener('click', () => {
-            bigFlashcard.classList.toggle('flipped');
-        });
+            bigFlashcard.addEventListener('click', () => {
+                bigFlashcard.classList.toggle('flipped');
+            });
 
             let currentCardIndex = 0;
 
@@ -61,8 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 bigFlashcard.querySelector('#big-flashcard-back').textContent = set.cards[currentCardIndex].back;
                 bigFlashcardIndex.textContent = `${currentCardIndex + 1} / ${set.cards.length}`;
             });
-
-
         } else {
             bigFlashcard.innerHTML = '<p>No flashcards in this set yet</p>';
             prevButton.classList.add('hide');
@@ -70,6 +72,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     } else {
         setTitleElement.textContent = 'Set not found';
-
     }
 });
+
+function editFlashcard(index) {
+    const sets = JSON.parse(localStorage.getItem('flashcardSets')) || [];
+    const currentSetIndex = localStorage.getItem('currentSetIndex');
+    const set = sets[currentSetIndex];
+    const editFront = prompt('Enter a new front for the flashcard');
+    const editBack = prompt('Enter a new back for the flashcard');
+    if (editFront && editBack) {
+        set.cards[index].front = editFront;
+        set.cards[index].back = editBack;
+        localStorage.setItem('flashcardSets', JSON.stringify(sets));
+        window.location.reload();
+    }
+}
+
+function deleteFlashcard(index) {
+    const sets = JSON.parse(localStorage.getItem('flashcardSets')) || [];
+    const currentSetIndex = localStorage.getItem('currentSetIndex');
+    const set = sets[currentSetIndex];
+    if (confirm('Are you sure you want to delete this flashcard?')) {
+        set.cards.splice(index, 1);
+        localStorage.setItem('flashcardSets', JSON.stringify(sets));
+        window.location.reload();
+    }
+}
